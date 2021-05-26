@@ -57,6 +57,7 @@
   </section>
 
   <script>
+
     let calculateBtn = document.querySelector('#calculate');
     calculateBtn.addEventListener('click', () => {
       let output = document.querySelector('output');
@@ -67,7 +68,83 @@
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
+    console.log(errorBtns);
     // TODO - Make buttons functional
+    
+    errorBtns.forEach(bt =>{
+      if(bt.innerText == "Console Log Demo"){
+         bt.addEventListener("click", ()=>{
+              console.log("Console Log Demo");
+         });
+      }
+      if(bt.innerText == "Console Error Demo"){
+         bt.addEventListener("click", ()=>{
+              console.error("Console Error Demo");
+         });
+      }
+      if(bt.innerText == "Console Dir"){
+         bt.addEventListener("click", ()=>{
+          console.dir(bt);
+         });
+      }
+      if(bt.innerText == "Console Error"){
+         bt.addEventListener("click", ()=>{
+          console.error({msg:"Doh!"});
+         });
+      }
+      if(bt.innerText == "Console dirxml"){
+         bt.addEventListener("click", ()=>{
+          let body = document.querySelector("body");
+          console.log(body);
+         });
+      }
+      if(bt.innerText == "Console Group Start"){
+         bt.addEventListener("click", ()=>{
+            console.group("Log Group");
+         });
+      }
+      if(bt.innerText == "Console Group End"){
+         bt.addEventListener("click", ()=>{
+            console.groupEnd("Log Group");
+         });
+      }
+      if(bt.innerText == "Console Table"){
+         bt.addEventListener("click", ()=>{
+            console.table([{index:0,first:"Rene",last:"Maritte"},{index:1,first:"Chaim",last:"Souttine",birthday:"18930113"},{index:2,first:"Henri", last: "Matisse"}]);
+         });
+      }
+      if(bt.innerText == "Start Timer"){
+         bt.addEventListener("click", ()=>{
+            console.log("Timer started!")
+            console.time("Run Time");
+         });
+      }
+      if(bt.innerText == "End Timer"){
+         bt.addEventListener("click", ()=>{
+            console.log("Timer ended!")
+            console.timeEnd("Run Time");
+         });
+      }
+      if(bt.innerText == "Console Trace"){
+         bt.addEventListener("click", ()=>{
+          const traceTest = () => { deep(); };
+          const deep = () => { deeper(); };
+          const deeper = () => { deepest(); };
+          const deepest = () => { console.trace(); };
+          traceTest();
+         });
+      }
+      if(bt.innerText == "Console Trace"){
+         bt.addEventListener("click", ()=>{
+          const traceTest = () => { deep(); };
+          const deep = () => { deeper(); };
+          const deeper = () => { deepest(); };
+          const deepest = () => { console.trace(); };
+          traceTest();
+         });
+      }
+
+    });
   </script>
 </body>
 </html>
