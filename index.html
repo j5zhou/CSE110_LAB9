@@ -28,14 +28,14 @@
 <body>
   <fieldset>
     <legend>Error Calculator</legend>
-    <input type="number" name="first-num" id="first-num" />
+    <input type="text" name="first-num" id="first-num" />
     <select name="operator" id="operator">
       <option>+</option>
       <option>-</option>
       <option>*</option>
       <option>/</option>
     </select>
-    <input type="number" name="second-num" id="second-num" />
+    <input type="text" name="second-num" id="second-num" />
     <button id="calculate">Calculate</button>
     <br />
     <output></output>
@@ -57,19 +57,53 @@
   </section>
 
   <script>
+    class CalculationError extends Error {
+      constructor(message) {
+        super(message); // (1)
+        this.name = "CalculationError"; // (2)
+      }
+    }
+
+    class ConversionError extends Error {
+      constructor(message) {
+        super(message); // (1)
+        this.name = "ConversionError"; // (2)
+      }
+    }
+
+    window.onerror = function(message, source, lineno, colno, error) {
+         console.error(message);
+         return true;
+     };
 
     let calculateBtn = document.querySelector('#calculate');
     calculateBtn.addEventListener('click', () => {
-      let output = document.querySelector('output');
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
+      let output = document.querySelector('output');
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try {
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+          } catch(err) {
+            console.log("Sadly an error happened friend");
+            if(isNaN(firstNum) || isNaN(secondNum)){
+                throw new ConversionError("Conversion Error：value converted to NaN");
+            }
+        }
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
     console.log(errorBtns);
     // TODO - Make buttons functional
+
+    function test() {
+      let firstNum = parseInt(document.querySelector('#first-num').value);
+      let secondNum = parseInt(document.querySelector('#second-num').value);
+      if(firstNum+secondNum != 10){
+        throw new CalculationError("CalculationError: Additon result != 10");
+      }
+    }
+
     
     errorBtns.forEach(bt =>{
       if(bt.innerText == "Console Log Demo"){
@@ -134,13 +168,14 @@
           traceTest();
          });
       }
-      if(bt.innerText == "Console Trace"){
+      if(bt.innerText == "Trigger a Global Error"){
          bt.addEventListener("click", ()=>{
-          const traceTest = () => { deep(); };
-          const deep = () => { deeper(); };
-          const deeper = () => { deepest(); };
-          const deepest = () => { console.trace(); };
-          traceTest();
+          try {
+                test();
+              } catch(err) {
+                console.log("Sadly an error happened friend");
+                console.error(err.message);
+              }
          });
       }
 
